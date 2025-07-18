@@ -56,6 +56,13 @@ _XLA_ONEAPI_TARGET_PATTERNS = (
     "//xla/stream_executor/sycl:stream_executor_sycl",
     "//xla/stream_executor/sycl:sycl_status_test",
 )
+_XLA_INTEL_BUILD_TARGET_PATTERNS = (
+    "//xla/service/gpu/...",
+    "//xla/stream_executor/...",
+)
+_XLA_INTEL_TEST_TARGET_PATTERNS = (
+    "//xla/stream_executor/...",
+)
 _XLA_CPU_PRESUBMIT_BENCHMARKS_DEFAULT_TARGET_PATTERNS = (
     "//xla/tools/multihost_hlo_runner:hlo_runner_main",
     "//xla/tools:compute_xspace_stats_main",
@@ -364,6 +371,20 @@ Build(
     build_tag_filters=oneapi_build_tag_filter,
     test_tag_filters=oneapi_test_tag_filter,
     options={**_DEFAULT_BAZEL_OPTIONS, "//xla/tsl:ci_build": True},
+)
+
+Build(
+    type_=BuildType.XLA_LINUX_X86_GPU_INTEL_GITHUB_ACTIONS,
+    repo="ke1ding/xla",
+    configs=(),
+    target_patterns=_XLA_INTEL_BUILD_TARGET_PATTERNS,
+    build_tag_filters=(),
+    test_tag_filters=(),
+    options={
+      "copt=-Wno-deprecated-declarations": True,
+      "copt=-Wno-gnu-offsetof-extensions": True,
+      "copt=-Wno-stringop-truncation": True,
+            },
 )
 
 Build(
