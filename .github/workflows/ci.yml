@@ -43,7 +43,7 @@ jobs:
       matrix:
         job_info: [
           {
-            pool: "linux-x86-n2-16",
+            pool: "self-hosted",
             container: "us-docker.pkg.dev/ml-oss-artifacts-published/ml-public-container/ml-build:latest",
             name: "XLA_LINUX_X86_GPU_INTEL_GITHUB_ACTIONS",
             repo: "ke1ding/xla",
