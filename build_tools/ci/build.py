@@ -110,6 +110,7 @@ class BuildType(enum.Enum):
   XLA_LINUX_ARM64_CPU_GITHUB_ACTIONS = enum.auto()
   XLA_LINUX_X86_GPU_T4_GITHUB_ACTIONS = enum.auto()
   XLA_LINUX_X86_GPU_ONEAPI_GITHUB_ACTIONS = enum.auto()
+  XLA_LINUX_X86_GPU_INTEL_GITHUB_ACTIONS = enum.auto()
 
   # Presubmit builds for regression testing.
   XLA_LINUX_ARM64_CPU_48_VCPU_PRESUBMIT_GITHUB_ACTIONS = enum.auto()
@@ -356,6 +357,19 @@ oneapi_test_tag_filter = (
     "-no-oneapi",
 )
 
+pvc_test_tag_filter = (
+    "oneapi-only",
+    # This build of oneAPI backend runs on X86 host with an Intel GPU,so
+    # we are including the tests requiring Intel GPU
+    "requires-gpu-intel",
+    "-requires-gpu-amd",
+    "-requires-gpu-nvidia",
+    "-no_oss",
+    "-cuda-only",
+    "-rocm-only",
+    "-no-oneapi",
+)
+
 Build(
     type_=BuildType.XLA_LINUX_X86_GPU_ONEAPI_GITHUB_ACTIONS,
     repo="openxla/xla",
@@ -363,6 +377,16 @@ Build(
     target_patterns=_XLA_ONEAPI_TARGET_PATTERNS,
     build_tag_filters=oneapi_build_tag_filter,
     test_tag_filters=oneapi_test_tag_filter,
+    options={**_DEFAULT_BAZEL_OPTIONS, "//xla/tsl:ci_build": True},
+)
+
+Build(
+    type_=BuildType.XLA_LINUX_X86_GPU_INTEL_GITHUB_ACTIONS,
+    repo="ke1ding/xla",
+    configs=("sycl"),
+    target_patterns=_XLA_ONEAPI_TARGET_PATTERNS,
+    build_tag_filters=oneapi_build_tag_filter,
+    test_tag_filters=pvc_test_tag_filter,
     options={**_DEFAULT_BAZEL_OPTIONS, "//xla/tsl:ci_build": True},
 )
 
