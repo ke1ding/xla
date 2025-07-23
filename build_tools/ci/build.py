@@ -383,7 +383,7 @@ Build(
 Build(
     type_=BuildType.XLA_LINUX_X86_GPU_INTEL_GITHUB_ACTIONS,
     repo="ke1ding/xla",
-    configs=("sycl",),
+    configs=("sycl","sycl_hermetic"),
     target_patterns=_XLA_ONEAPI_TARGET_PATTERNS,
     build_tag_filters=oneapi_build_tag_filter,
     test_tag_filters=pvc_test_tag_filter,
