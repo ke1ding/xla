@@ -386,7 +386,7 @@ Build(
     configs=("sycl","sycl_hermetic"),
     target_patterns=_XLA_ONEAPI_TARGET_PATTERNS,
     build_tag_filters=oneapi_build_tag_filter,
-    test_tag_filters=pvc_test_tag_filter,
+    test_tag_filters=oneapi_test_tag_filter,
     options={**_DEFAULT_BAZEL_OPTIONS, "//xla/tsl:ci_build": True},
 )
 
